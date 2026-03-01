@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reto Ahorro 8M</title>
+
+  <!-- Favicon SVG inline -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23f5c842'/><text y='72' x='50' text-anchor='middle' font-size='60' font-family='serif'>₿</text></svg>"/>
+
+  <!-- Fuentes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6 Free -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body class="dark">
+
+<!-- ================================================
+     PANTALLA DE LOGIN
+================================================ -->
+<div id="login-screen" class="login-screen">
+  <canvas id="stars-canvas" class="stars-canvas"></canvas>
+
+  <div class="login-card">
+    <div class="login-glow"></div>
+
+    <div class="coin-icon">
+      <div class="coin-inner">
+        <i class="fa-solid fa-coins"></i>
+      </div>
+      <div class="coin-ring r1"></div>
+      <div class="coin-ring r2"></div>
+    </div>
+
+    <h1 class="login-title">Reto Ahorro</h1>
+    <p class="login-sub">Ingresa tu PIN de acceso</p>
+
+    <div class="pin-row" id="pin-row">
+      <div class="pin-dot" id="pd0"></div>
+      <div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div>
+      <div class="pin-dot" id="pd3"></div>
+    </div>
+
+    <div class="pin-msg hidden" id="pin-msg">
+      <i class="fa-solid fa-circle-xmark"></i> Codigo incorrecto
+    </div>
+
+    <div class="keypad">
+      <button class="kbtn" data-n="1">1</button>
+      <button class="kbtn" data-n="2">2</button>
+      <button class="kbtn" data-n="3">3</button>
+      <button class="kbtn" data-n="4">4</button>
+      <button class="kbtn" data-n="5">5</button>
+      <button class="kbtn" data-n="6">6</button>
+      <button class="kbtn" data-n="7">7</button>
+      <button class="kbtn" data-n="8">8</button>
+      <button class="kbtn" data-n="9">9</button>
+      <button class="kbtn ghost"></button>
+      <button class="kbtn" data-n="0">0</button>
+      <button class="kbtn del" id="kbtn-del">
+        <i class="fa-solid fa-delete-left"></i>
+      </button>
+    </div>
+
+    <p class="login-credit">
+      <i class="fa-solid fa-code"></i> Desarrollado por <strong>Deison Bm</strong>
+    </p>
+  </div>
+</div>
+
+
+<!-- ================================================
+     APP PRINCIPAL
+================================================ -->
+<div id="app-screen" class="app-screen hidden">
+
+  <div class="bg-orbs">
+    <div class="orb o1"></div>
+    <div class="orb o2"></div>
+    <div class="orb o3"></div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="hdr">
+    <div class="hdr-inner">
+
+      <div class="hdr-brand">
+        <div class="hdr-coin">
+          <i class="fa-solid fa-coins"></i>
+        </div>
+        <div class="hdr-brand-text">
+          <div class="hdr-title">Reto <strong>8M</strong></div>
+          <div class="hdr-badge">
+            <span class="badge-dot" id="badge-dot"></span>
+            <span id="badge-txt">Local</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hdr-actions">
+        <button class="hbtn" id="btn-theme" title="Cambiar tema">
+          <i class="fa-solid fa-sun" id="theme-icon"></i>
+        </button>
+        <button class="hbtn warn" id="btn-reset" title="Reiniciar reto">
+          <i class="fa-solid fa-rotate-left"></i>
+        </button>
+        <button class="hbtn" id="btn-logout" title="Cerrar sesion">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="app-main">
+
+    <!-- HERO -->
+    <section class="hero-section">
+
+      <div class="hero-card">
+        <div class="hero-bg-text">AHORRO</div>
+        <div class="hero-content">
+          <p class="hero-lbl">
+            <i class="fa-solid fa-piggy-bank"></i> Total Ahorrado
+          </p>
+          <h2 class="hero-amount" id="stat-saved">$0</h2>
+          <p class="hero-sub">
+            <span id="stat-count">0</span> de 200 casillas completadas
+          </p>
+        </div>
+        <div class="hero-ring-wrap">
+          <svg class="hero-ring" viewBox="0 0 120 120">
+            <defs>
+              <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#3d8bff"/>
+                <stop offset="100%" stop-color="#00e5a0"/>
+              </linearGradient>
+            </defs>
+            <circle class="ring-track" cx="60" cy="60" r="52"/>
+            <circle class="ring-fill" id="ring-fill" cx="60" cy="60" r="52"
+              stroke-dasharray="327" stroke-dashoffset="327"/>
+            <text x="60" y="58" text-anchor="middle" class="ring-pct" id="ring-pct">0%</text>
+            <text x="60" y="73" text-anchor="middle" class="ring-sub-txt">avance</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Mini stats - columna derecha -->
+      <div class="mini-stats">
+        <div class="mini-card">
+          <div class="mini-ico-wrap" style="--ic:#3d8bff">
+            <i class="fa-solid fa-bullseye"></i>
+          </div>
+          <div class="mini-data">
+            <span class="mini-lbl">Meta Total</span>
+            <span class="mini-val">$8.000.000</span>
+          </div>
+        </div>
+        <div class="mini-card">
+          <div class="mini-ico-wrap" style="--ic:#f5c842">
+            <i class="fa-solid fa-arrow-trend-down"></i>
+          </div>
+          <div class="mini-data">
+            <span class="mini-lbl">Faltante</span>
+            <span class="mini-val gold" id="stat-remaining">$8.000.000</span>
+          </div>
+        </div>
+        <div class="mini-card">
+          <div class="mini-ico-wrap" style="--ic:#00e5a0">
+            <i class="fa-solid fa-check-double"></i>
+          </div>
+          <div class="mini-data">
+            <span class="mini-lbl">Completadas</span>
+            <span class="mini-val green" id="stat-done-count">0</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- PROGRESO -->
+    <section class="prog-section">
+      <div class="prog-head">
+        <span class="prog-label">
+          <i class="fa-solid fa-chart-line"></i> Progreso del Reto
+        </span>
+        <span class="prog-nums"><b id="prog-n">0</b>/200</span>
+      </div>
+      <div class="prog-rail">
+        <div class="prog-fill" id="prog-fill" style="width:0%">
+          <div class="fill-glimmer"></div>
+        </div>
+        <div class="milestone" style="left:25%">
+          <span class="ms-label">25%</span>
+        </div>
+        <div class="milestone" style="left:50%">
+          <span class="ms-label">50%</span>
+        </div>
+        <div class="milestone" style="left:75%">
+          <span class="ms-label">75%</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- FILTROS + LEYENDA -->
+    <div class="toolbar">
+      <div class="filter-row">
+        <button class="fpill active" data-f="all">
+          <i class="fa-solid fa-grip"></i> Todas <em id="fc-all">200</em>
+        </button>
+        <button class="fpill" data-f="pending">
+          <i class="fa-regular fa-clock"></i> Pendientes <em id="fc-pend">200</em>
+        </button>
+        <button class="fpill" data-f="done">
+          <i class="fa-solid fa-circle-check"></i> Completadas <em id="fc-done">0</em>
+        </button>
+      </div>
+      <div class="legend" id="legend"></div>
+    </div>
+
+    <!-- GRID -->
+    <section class="grid-section">
+      <div id="grid" class="grid"></div>
+      <div id="loader" class="grid-loader hidden">
+        <div class="spin-ring"></div>
+        <p>Sincronizando con la nube...</p>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      <div class="footer-left">
+        <i class="fa-solid fa-circle-nodes" id="status-icon"></i>
+        <span id="status-bar">Modo local activo</span>
+      </div>
+      <div class="footer-right">
+        <i class="fa-solid fa-code"></i>
+        Desarrollado por <strong>Deison Bm</strong>
+      </div>
+    </footer>
+
+  </main>
+</div>
+
+
+<!-- MODAL RESET -->
+<div id="modal" class="modal-bg hidden">
+  <div class="modal-box">
+    <div class="modal-icon-wrap">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+    </div>
+    <h3>Reiniciar el Reto</h3>
+    <p>Esto borrara todo tu progreso guardado. Esta accion no se puede deshacer.</p>
+    <div class="modal-row">
+      <button class="m-cancel" id="m-cancel">
+        <i class="fa-solid fa-xmark"></i> Cancelar
+      </button>
+      <button class="m-confirm" id="m-confirm">
+        <i class="fa-solid fa-rotate-left"></i> Si, reiniciar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast hidden">
+  <i class="fa-solid fa-circle-check toast-icon"></i>
+  <span id="toast-txt"></span>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
